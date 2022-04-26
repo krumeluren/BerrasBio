@@ -10,31 +10,38 @@
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ShowTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Movie)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Saloon)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
+
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
+        <thead>
+            <tr>
+                <th>
+                    
+                        @Html.DisplayNameFor(model => model.ShowTime)
+                </th>
+                <th>
+
+                        @Html.DisplayNameFor(model => model.Movie)
+                </th>
+                <th>
+                        @Html.DisplayNameFor(model => model.Saloon)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ShowTime)
+                <h3>@Html.DisplayFor(modelItem => item.ShowTime)</h3>
+                    
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Movie.MovieID)
+                <h3>@Html.DisplayFor(modelItem => item.Movie.MovieID)</h3>
+                    
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Saloon.SaloonID)
+                <h3>@item.Saloon.Name</h3> @item.SaloonID
+                    
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ShowID">Edit</a> |
@@ -42,6 +49,39 @@
                 <a asp-action="Delete" asp-route-id="@item.ShowID">Delete</a>
             </td>
         </tr>
-}
+        <thead>
+            <tr>
+                <th>
+                    Bookable seats
+                </th>
+                <th>
+                    Seat ID
+                </th>
+                <th>
+                    Show ID
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+            @foreach (Bookable_Seats seat in item.Bookable_Seats)
+            {
+            <tr>
+                <td>
+                    <p>@seat.Bookable_SeatsID</p>
+                </td>
+                <td>
+                    <p>@seat.SeatID </p>
+                </td>
+                <td>
+                    <p>@seat.ShowID</p>
+                </td>
+                <td>
+                    <a asp-controller="AdminTool_Bookable_Seats" asp-action="Edit" asp-route-id="@seat.Bookable_SeatsID">Edit</a> |
+                    <a asp-controller="AdminTool_Bookable_Seats" asp-action="Details" asp-route-id="@seat.Bookable_SeatsID">Details</a> |
+                    <a asp-controller="AdminTool_Bookable_Seats" asp-action="Delete" asp-route-id="@seat.Bookable_SeatsID">Delete</a>
+                </td>
+            </tr>
+            }
+        }
     </tbody>
 </table>

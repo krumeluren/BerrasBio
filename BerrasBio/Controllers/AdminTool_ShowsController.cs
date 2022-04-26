@@ -23,7 +23,10 @@ namespace BerrasBio.Controllers
         // GET: AdminTool_Shows
         public async Task<IActionResult> Index()
         {
-            var berrasBioContext = _context.Show.Include(s => s.Movie).Include(s => s.Saloon);
+            var berrasBioContext = _context.Show
+                .Include(s => s.Movie)
+                .Include(s => s.Saloon)
+                .Include(s => s.Bookable_Seats);
             return View(await berrasBioContext.ToListAsync());
         }
 
@@ -60,12 +63,30 @@ namespace BerrasBio.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ShowID,ShowTime,MovieID,SaloonID")] Show show, int seatCount)
+        public async Task<IActionResult> Create([Bind("ShowID,ShowTime,MovieID,SaloonID")] Show show)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(show);
+                
                 await _context.SaveChangesAsync();
+
+                show = await _context.Show
+                    .Include(s => s.Movie)
+                    .Include(s => s.Saloon)
+                        .ThenInclude(s => s.Seats)
+                    .FirstOrDefaultAsync(m => m.ShowID == show.ShowID);
+
+                
+                foreach (Seat seat in show.Saloon.Seats)
+                {
+                    Bookable_Seats bookable_Seats = new Bookable_Seats();
+                    bookable_Seats.SeatID = seat.SeatID;
+                    bookable_Seats.ShowID = show.ShowID;
+                    _context.Add(bookable_Seats);
+                }
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             var errors = ModelState.Values.SelectMany(v => v.Errors);

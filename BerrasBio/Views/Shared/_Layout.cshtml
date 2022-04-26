@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - BerrasBio</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    
+
 
     <link rel="stylesheet" href="~/BerrasBio.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="_Layout.cshtml.css" asp-append-version="true" />
@@ -23,25 +23,26 @@
                 color: black;
                 transition-delay: 0s;
             }
-        #header-menu{
+
+        #header-menu {
             background-color: white;
             display: flex;
             border-bottom: 1px solid lightgray;
             min-height: 80px;
+        }
 
-        }
         @@media (max-width: 500px) {
-            #header-menu{
-            display: block;
+            #header-menu {
+                display: block;
             }
-            #header-menu > #header-title{
-                height: 50px;
-                text-align: left;
-                white-space: nowrap;
-                padding-left: 28px;
-            }
+
+                #header-menu > #header-title {
+                    height: 50px;
+                    text-align: left;
+                    white-space: nowrap;
+                    padding-left: 28px;
+                }
         }
-        
     </style>
 
 </head>
@@ -60,8 +61,14 @@
                 <a id="nav-item" asp-area="" asp-controller="Shows" asp-action="All">Kommande Föreställningar</a>
             </li>
             <li>
-                <a id="nav-item" asp-area="" asp-controller="AdminTool_Accounts" asp-action="Index">Accounts</a>
+                <a id="nav-item" asp-area="" asp-controller="AdminTool_Accounts" asp-action="Index" style="color: red;">Admin: Add Accounts</a>
             </li>
+            <li>
+                <a id="nav-item" asp-area="" asp-controller="AdminTool_Shows" asp-action="Index" style="color: red;">Admin: Add Shows</a>
+            </li>
+                        <li>
+                <a id="nav-item" asp-area="" asp-controller="AdminTool_Movies" asp-action="Index" style="color: red;">Admin: Add Movies</a>
+            </li>            
         </ul>
     </header>
 

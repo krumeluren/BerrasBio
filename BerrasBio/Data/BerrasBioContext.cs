@@ -14,7 +14,14 @@ namespace BerrasBio.Data
             : base(options)
         {
         }
-        
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Bookable_Seats>(b =>
+            {
+                b.HasIndex(e => new { e.SeatID, e.ShowID }).IsUnique();
+            });
+        }
 
         public DbSet<BerrasBio.Models.Account> Account { get; set; }
 
