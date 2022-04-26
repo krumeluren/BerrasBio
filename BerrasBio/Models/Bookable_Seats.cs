@@ -9,10 +9,10 @@ namespace BerrasBio.Models
         public int Bookable_SeatsID { get; set; }
         public decimal Ticket_Price { get; set; }
         public int ShowID { get; set; }
-        public virtual Show Show { get; set; }
+        public virtual Show? Show { get; set; }
         
         public int SeatID { get; set; }
-        public virtual Seat Seat { get; set; }
+        public virtual Seat? Seat { get; set; }
         
 
         public int? BookingID { get; set; }

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<BerrasBio.Models.Movie>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h1>Alla Filmer</h1>
+
+<link rel="stylesheet" href="~/images/movie_poster/" asp-append-version="true" />
+<div class="movies-wrap">
+    <div class="movies-container">
+        @foreach (Movie movie in Model)
+        {
+            <div class="movie">
+                <a href="@Url.Action("Details", "Movies", new { id = movie.MovieID })">
+                    <img id="poster" src="@movie.Image_Source" />
+                    <p>@movie.Title</p>
+                </a>
+                <p>
+                    @TimeSpan.FromSeconds(movie.Length).TotalMinutes minuter
+                </p>
+            </div>
+
+        }
+
+    </div>
+
+</div>
+
+

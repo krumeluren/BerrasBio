@@ -11,22 +11,24 @@ using BerrasBio.Models;
 
 namespace BerrasBio.Controllers
 {
-    public class AccountsController : Controller
+    public class AdminTool_MoviesController : Controller
     {
         private readonly BerrasBioContext _context;
 
-        public AccountsController(BerrasBioContext context)
+        public AdminTool_MoviesController(BerrasBioContext context)
         {
             _context = context;
         }
 
-        // GET: Accounts
+
+
+        // GET: AdminTool_Movies
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Account.ToListAsync());
+            return View(await _context.Movie.ToListAsync());
         }
 
-        // GET: Accounts/Details/5
+        // GET: AdminTool_Movies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,39 +36,39 @@ namespace BerrasBio.Controllers
                 return NotFound();
             }
 
-            var account = await _context.Account
-                .FirstOrDefaultAsync(m => m.AccountID == id);
-            if (account == null)
+            var movie = await _context.Movie
+                .FirstOrDefaultAsync(m => m.MovieID == id);
+            if (movie == null)
             {
                 return NotFound();
             }
 
-            return View(account);
+            return View(movie);
         }
 
-        // GET: Accounts/Create
+        // GET: AdminTool_Movies/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Accounts/Create
+        // POST: AdminTool_Movies/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AccountID,FirstName,LastName,DisplayName,PhoneNumber,Email")] Account account)
+        public async Task<IActionResult> Create([Bind("MovieID,Title,Length,Image_Source")] Movie movie)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(account);
+                _context.Add(movie);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(account);
+            return View(movie);
         }
 
-        // GET: Accounts/Edit/5
+        // GET: AdminTool_Movies/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +76,22 @@ namespace BerrasBio.Controllers
                 return NotFound();
             }
 
-            var account = await _context.Account.FindAsync(id);
-            if (account == null)
+            var movie = await _context.Movie.FindAsync(id);
+            if (movie == null)
             {
                 return NotFound();
             }
-            return View(account);
+            return View(movie);
         }
 
-        // POST: Accounts/Edit/5
+        // POST: AdminTool_Movies/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AccountID,FirstName,LastName,DisplayName,PhoneNumber,Email")] Account account)
+        public async Task<IActionResult> Edit(int id, [Bind("MovieID,Title,Length,Image_Source")] Movie movie)
         {
-            if (id != account.AccountID)
+            if (id != movie.MovieID)
             {
                 return NotFound();
             }
@@ -98,12 +100,12 @@ namespace BerrasBio.Controllers
             {
                 try
                 {
-                    _context.Update(account);
+                    _context.Update(movie);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AccountExists(account.AccountID))
+                    if (!MovieExists(movie.MovieID))
                     {
                         return NotFound();
                     }
@@ -114,10 +116,10 @@ namespace BerrasBio.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(account);
+            return View(movie);
         }
 
-        // GET: Accounts/Delete/5
+        // GET: AdminTool_Movies/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,30 +127,30 @@ namespace BerrasBio.Controllers
                 return NotFound();
             }
 
-            var account = await _context.Account
-                .FirstOrDefaultAsync(m => m.AccountID == id);
-            if (account == null)
+            var movie = await _context.Movie
+                .FirstOrDefaultAsync(m => m.MovieID == id);
+            if (movie == null)
             {
                 return NotFound();
             }
 
-            return View(account);
+            return View(movie);
         }
 
-        // POST: Accounts/Delete/5
+        // POST: AdminTool_Movies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var account = await _context.Account.FindAsync(id);
-            _context.Account.Remove(account);
+            var movie = await _context.Movie.FindAsync(id);
+            _context.Movie.Remove(movie);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AccountExists(int id)
+        private bool MovieExists(int id)
         {
-            return _context.Account.Any(e => e.AccountID == id);
+            return _context.Movie.Any(e => e.MovieID == id);
         }
     }
 }

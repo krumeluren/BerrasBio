@@ -14,7 +14,14 @@ namespace BerrasBio.Data
             : base(options)
         {
         }
+        
 
         public DbSet<BerrasBio.Models.Account> Account { get; set; }
+
+        public DbSet<BerrasBio.Models.Movie> Movie { get; set; }
+
+        public DbSet<BerrasBio.Models.Show> Show { get; set; }
+
+        public DbSet<BerrasBio.Models.Bookable_Seats> Bookable_Seats { get; set; }
     }
 }

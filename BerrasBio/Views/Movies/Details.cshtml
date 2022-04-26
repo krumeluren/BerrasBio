@@ -1,0 +1,73 @@
+﻿@model BerrasBio.Models.Movie
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<link rel="stylesheet" href="~/images/movie_poster/" asp-append-version="true" />
+
+<div class="movie">
+    <img id="poster" src="../../@Model.Image_Source">
+    <a href="@Url.Action("Details", "Movies", new { id = Model.MovieID })">
+
+        <p>@Model.Title</p>
+    </a>
+    <p>
+        @TimeSpan.FromSeconds(Model.Length).TotalMinutes minuter
+    </p>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tid
+            </th>
+            <th>
+                
+            </th>
+            <th>
+                Biljetter
+            </th>
+            <th>
+
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Show show in Model.Shows)
+        {
+            if (show.ShowTime >= DateTime.Now)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => show.ShowTime.TimeOfDay)
+                    </td>
+                    <td>
+                        @if (show.ShowTime >= DateTime.Now && show.ShowTime < DateTime.Now.AddDays(7))
+                        {
+                            @show.ShowTime.Date.ToString("dddd").ToUpper()
+                        }
+                        else
+                        {
+                            @show.ShowTime.Date.ToString("dd MMMM yyyy")
+                        }
+                        
+                    </td>
+                    <td>
+                        @show.Bookable_Seats.Count(a => a.Booking == null)
+                        kvar av
+                        @Html.DisplayFor(modelItem => show.Bookable_Seats.Count)
+                    </td>
+                    <td>
+                        <a asp-controller="Shows" asp-action="Booking" asp-route-id="@show.ShowID">
+                            <button>Boka</button>
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        }
+    </tbody>
+</table>

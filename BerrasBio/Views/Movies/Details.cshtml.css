@@ -1,0 +1,22 @@
+﻿body {
+}
+
+#poster {
+    object-fit: cover;
+    width: 80%;
+    aspect-ratio: 27 / 40;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: auto;
+}
+
+.movie {
+    display: grid;
+    margin: auto;
+    width: 20vw;
+}
+
+    .movie a {
+        display: grid;
+    }

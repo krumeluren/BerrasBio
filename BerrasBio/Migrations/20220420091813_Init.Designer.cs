@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BerrasBio.Migrations
 {
     [DbContext(typeof(BerrasBioContext))]
-    [Migration("20220413155929_Init")]
+    [Migration("20220420091813_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,24 +131,6 @@ namespace BerrasBio.Migrations
                     b.ToTable("Movie");
                 });
 
-            modelBuilder.Entity("BerrasBio.Models.Row", b =>
-                {
-                    b.Property<int>("RowID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RowID"), 1L, 1);
-
-                    b.Property<int>("SaloonID")
-                        .HasColumnType("int");
-
-                    b.HasKey("RowID");
-
-                    b.HasIndex("SaloonID");
-
-                    b.ToTable("Row");
-                });
-
             modelBuilder.Entity("BerrasBio.Models.Saloon", b =>
                 {
                     b.Property<int>("SaloonID")
@@ -174,12 +156,12 @@ namespace BerrasBio.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SeatID"), 1L, 1);
 
-                    b.Property<int>("RowID")
+                    b.Property<int>("SaloonID")
                         .HasColumnType("int");
 
                     b.HasKey("SeatID");
 
-                    b.HasIndex("RowID");
+                    b.HasIndex("SaloonID");
 
                     b.ToTable("Seat");
                 });
@@ -254,26 +236,15 @@ namespace BerrasBio.Migrations
                     b.Navigation("Show");
                 });
 
-            modelBuilder.Entity("BerrasBio.Models.Row", b =>
+            modelBuilder.Entity("BerrasBio.Models.Seat", b =>
                 {
                     b.HasOne("BerrasBio.Models.Saloon", "Saloon")
-                        .WithMany("Rows")
+                        .WithMany("Seats")
                         .HasForeignKey("SaloonID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Saloon");
-                });
-
-            modelBuilder.Entity("BerrasBio.Models.Seat", b =>
-                {
-                    b.HasOne("BerrasBio.Models.Row", "Row")
-                        .WithMany("Seats")
-                        .HasForeignKey("RowID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Row");
                 });
 
             modelBuilder.Entity("BerrasBio.Models.Show", b =>
@@ -310,14 +281,9 @@ namespace BerrasBio.Migrations
                     b.Navigation("Shows");
                 });
 
-            modelBuilder.Entity("BerrasBio.Models.Row", b =>
-                {
-                    b.Navigation("Seats");
-                });
-
             modelBuilder.Entity("BerrasBio.Models.Saloon", b =>
                 {
-                    b.Navigation("Rows");
+                    b.Navigation("Seats");
 
                     b.Navigation("Shows");
                 });

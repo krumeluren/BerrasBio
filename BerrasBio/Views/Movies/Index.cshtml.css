@@ -1,0 +1,74 @@
+﻿body {
+}
+
+ 
+#poster {
+    object-fit: cover;
+    width: 80%;
+    aspect-ratio: 27 / 40;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: auto;
+}
+
+.movie{
+    display:grid;
+    margin: auto;
+    width: 20vw;
+}
+.movie a {
+    display: grid;
+}
+
+.movies-container {
+    flex-wrap: wrap;
+    width: 100%;
+    display: inline-flex;
+}
+.movies-wrap {
+    flex-wrap: wrap;
+    width: 60vw;
+    display: block;
+    margin: auto;
+}
+
+/*Small window*/
+@media (max-width: 1467px) {
+    .movies-wrap {
+        width: 40vw;
+    }
+}
+
+/*Tablet*/
+@media (max-width: 1000px) {
+    .movies-wrap {
+        width: 60vw;
+    }
+    .movie {
+
+        width: 30vw;
+    }
+}
+
+/*Tablet Portrait*/
+@media (max-width: 650px) {
+    .movies-wrap {
+        width: 80vw;
+    }
+
+    .movie {
+        width: 40vw;
+    }
+}
+
+/*Mobile*/
+@media (max-width: 500px) {
+    .movies-wrap {
+        width: 50vw;
+    }
+
+    .movie {
+        width: 50vw;
+    }
+}

@@ -54,18 +54,18 @@ namespace BerrasBio.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Row",
+                name: "Seat",
                 columns: table => new
                 {
-                    RowID = table.Column<int>(type: "int", nullable: false)
+                    SeatID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SaloonID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Row", x => x.RowID);
+                    table.PrimaryKey("PK_Seat", x => x.SeatID);
                     table.ForeignKey(
-                        name: "FK_Row_Saloon_SaloonID",
+                        name: "FK_Seat_Saloon_SaloonID",
                         column: x => x.SaloonID,
                         principalTable: "Saloon",
                         principalColumn: "SaloonID",
@@ -97,25 +97,6 @@ namespace BerrasBio.Migrations
                         principalTable: "Saloon",
                         principalColumn: "SaloonID",
                         onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Seat",
-                columns: table => new
-                {
-                    SeatID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RowID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Seat", x => x.SeatID);
-                    table.ForeignKey(
-                        name: "FK_Seat_Row_RowID",
-                        column: x => x.RowID,
-                        principalTable: "Row",
-                        principalColumn: "RowID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -203,14 +184,9 @@ namespace BerrasBio.Migrations
                 column: "ShowID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Row_SaloonID",
-                table: "Row",
-                column: "SaloonID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Seat_RowID",
+                name: "IX_Seat_SaloonID",
                 table: "Seat",
-                column: "RowID");
+                column: "SaloonID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Show_MovieID",
@@ -239,9 +215,6 @@ namespace BerrasBio.Migrations
 
             migrationBuilder.DropTable(
                 name: "Show");
-
-            migrationBuilder.DropTable(
-                name: "Row");
 
             migrationBuilder.DropTable(
                 name: "Movie");
