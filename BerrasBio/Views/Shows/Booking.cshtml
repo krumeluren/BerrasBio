@@ -1,0 +1,203 @@
+﻿@model BerrasBio.Models.Show
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "Boka";
+}
+<h1>@Model.MovieID</h1>
+
+<a asp-controller="Movies" asp-action="Details" asp-route-id="@Model.MovieID">Tillbaka</a>
+
+<div>
+    <img id="poster" src="../../@Model.Movie.Image_Source">
+    <h4>@Model.Movie.Title</h4>
+    <h6>@Model.Saloon.Name</h6>
+    <p>
+
+        @{
+            var daysUntilShow = (DateTime.Today - Model.ShowTime.Date).TotalDays;
+            @if (daysUntilShow == 0)
+            {
+                @:Idag
+            }
+            else if (daysUntilShow == -1)
+            {
+                @:Imorgon
+            }
+            else if (daysUntilShow >= -6)
+            {
+                string showTime = Model.ShowTime.Date.ToString("dddd");
+                string showDay = showTime.Substring(0, 1).ToUpper() + showTime.Substring(1, showTime.Length - 1);
+                @showDay
+            }
+            else
+            {
+                @Model.ShowTime.Date.ToString("d MMMM yyyy")
+            }
+            @Model.ShowTime.ToString(" HH:mm")
+        }
+    </p>
+    <hr>
+
+    @using (Html.BeginForm())
+    {
+        <form asp-action="Booking" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <div class="seat-checkbox-wrap">
+                    <div class="seat-checkbox-container">
+                        @foreach (Bookable_Seats seat in Model.Bookable_Seats)
+                        {
+
+                            if (seat.Booking == null)
+                            {                        
+                                <input type="checkbox" class="seat-checkbox seat-checkbox-unbooked" value="@seat.Bookable_SeatsID" name="selectedSeats">
+                            }
+                            else
+                            {
+                                
+                                <input type="checkbox" class="seat-checkbox" disabled="disabled">
+                            }
+                        }
+                        <input type="checkbox" class="seat-checkbox" disabled="disabled">
+                        <input type="checkbox" class="seat-checkbox" disabled="disabled">  
+                        <input type="checkbox" class="seat-checkbox seat-checkbox-unbooked" name="selectedSeats">
+                        <input type="checkbox" class="seat-checkbox seat-checkbox-unbooked" name="selectedSeats">
+                        <input type="checkbox" class="seat-checkbox seat-checkbox-unbooked" name="selectedSeats">
+                        <input type="checkbox" class="seat-checkbox" disabled="disabled">
+                        <input type="checkbox" class="seat-checkbox seat-checkbox-unbooked" name="selectedSeats">
+
+                    </div>
+                </div>
+                <input type="hidden" asp-for="ShowID" />
+
+            </div>
+            <input type="submit" value="Booking" class="btn btn-primary" />
+        </form>
+    }
+
+    <p class="seat-count"></p>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Säte
+                </th>
+                <th>
+                    Pris
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="selected-seats-table">
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Booking">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="ShowTime" class="control-label"></label>
+                    <input asp-for="ShowTime" class="form-control" />
+                    <span asp-validation-for="ShowTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MovieID" class="control-label"></label>
+                    <select asp-for="MovieID" class="form-control" asp-items="ViewBag.MovieID"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SaloonID" class="control-label"></label>
+                    <select asp-for="SaloonID" class="form-control" asp-items="ViewBag.SaloonID"></select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+<div>
+</div>
+
+<script>
+    var checkboxes = document.querySelectorAll('.seat-checkbox-unbooked');
+
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].onchange = checkboxLogic;
+        
+    }
+
+    function checkboxLogic() {
+        var count = 0;
+        
+        // unlock all checkboxes if none are checked. if any are checked, disable all
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[5].disabled = true;
+            checkboxes[6].disabled = true;
+            checkboxes[9].disabled = true;
+            checkboxes[10].disabled = true;
+            if (checkboxes[i].checked){
+                for (var i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].disabled=true;
+                count++;
+                }
+            }
+            else{
+               checkboxes[i].disabled=false; 
+            } 
+        }
+        
+        for (var i = 0; i < checkboxes.length; i++) {
+            // get all checked checkboxes
+
+            if(checkboxes[i].checked == true){
+                
+                //unlock right checkbox if not checked
+                if(checkboxes[i] != checkboxes[checkboxes.length-1]){
+                    if(checkboxes[i+1].checked == false ){
+                        if(checkboxes[i+1].disabled == true){
+                            checkboxes[i+1].disabled=false;
+                            checkboxes[i].disabled=false;
+                        }
+                    }
+                }
+                //unlock left checkbox if not checked
+                if(checkboxes[i] != checkboxes[0]){
+                    if(checkboxes[i-1].checked == false ){
+                        if(checkboxes[i-1].disabled == true){
+                            checkboxes[i-1].disabled=false;
+                            checkboxes[i].disabled=false;
+                        }
+                    }
+                }
+                if(checkboxes[i] == checkboxes[0] || checkboxes[i] == checkboxes[checkboxes.length-1]){
+                    checkboxes[i].disabled=false;
+                }
+                
+            }
+            
+        }
+
+        document.querySelector(".seat-count").innerHTML = count;
+
+    }
+
+</script>

@@ -10,23 +10,35 @@
     <h4>Show</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ShowTime)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ShowTime)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Movie)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Movie.MovieID)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Saloon)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Saloon.SaloonID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Movie.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Movie.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Movie.Length)
+        </dt>
+        <dd class="col-sm-10">
+            @TimeSpan.FromSeconds(Model.Movie.Length).TotalMinutes min
         </dd>
     </dl>
 </div>
@@ -34,3 +46,40 @@
     <a asp-action="Edit" asp-route-id="@Model?.ShowID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Bookable seats
+            </th>
+            <th>
+                Seat ID
+            </th>
+            <th>
+                Show ID
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Bookable_Seats seat in Model.Bookable_Seats)
+        {
+            <tr>
+                <td>
+                    <p>@seat.Bookable_SeatsID</p>
+                </td>
+                <td>
+                    <p>@seat.SeatID </p>
+                </td>
+                <td>
+                    <p>@seat.ShowID</p>
+                </td>
+                <td>
+                    <a asp-controller="AdminTool_Bookable_Seats" asp-action="Edit" asp-route-id="@seat.Bookable_SeatsID">Edit</a> |
+                    <a asp-controller="AdminTool_Bookable_Seats" asp-action="Details" asp-route-id="@seat.Bookable_SeatsID">Details</a> |
+                    <a asp-controller="AdminTool_Bookable_Seats" asp-action="Delete" asp-route-id="@seat.Bookable_SeatsID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

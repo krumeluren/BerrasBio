@@ -24,7 +24,7 @@
                 Tid
             </th>
             <th>
-                
+
             </th>
             <th>
                 Biljetter
@@ -42,18 +42,30 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => show.ShowTime.TimeOfDay)
+                        @show.ShowTime.ToString("HH:mm")
                     </td>
                     <td>
-                        @if (show.ShowTime >= DateTime.Now && show.ShowTime < DateTime.Now.AddDays(7))
-                        {
-                            @show.ShowTime.Date.ToString("dddd").ToUpper()
+                        @{
+                            var daysUntilShow = (DateTime.Today - show.ShowTime.Date).TotalDays;
+                            @if (daysUntilShow == 0)
+                            {
+                                @:Idag
+                            }
+                            else if (daysUntilShow == -1)
+                            {
+                                @:Imorgon
+                            }
+                            else if (daysUntilShow >= -6)
+                            {
+                                string showTime = show.ShowTime.Date.ToString("dddd");
+                                string showDay = showTime.Substring(0, 1).ToUpper() + showTime.Substring(1, showTime.Length - 1);
+                                @showDay
+                            }
+                            else
+                            {
+                                @show.ShowTime.Date.ToString("d MMM yyyy")
+                            }
                         }
-                        else
-                        {
-                            @show.ShowTime.Date.ToString("dd MMMM yyyy")
-                        }
-                        
                     </td>
                     <td>
                         @show.Bookable_Seats.Count(a => a.Booking == null)
@@ -61,6 +73,7 @@
                         @Html.DisplayFor(modelItem => show.Bookable_Seats.Count)
                     </td>
                     <td>
+
                         <a asp-controller="Shows" asp-action="Booking" asp-route-id="@show.ShowID">
                             <button>Boka</button>
                         </a>

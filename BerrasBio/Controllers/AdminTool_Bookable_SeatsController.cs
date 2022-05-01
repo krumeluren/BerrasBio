@@ -162,7 +162,7 @@ namespace BerrasBio.Controllers
             var bookable_Seats = await _context.Bookable_Seats.FindAsync(id);
             _context.Bookable_Seats.Remove(bookable_Seats);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "AdminTool_Shows", new {@id = bookable_Seats.ShowID });
         }
 
         private bool Bookable_SeatsExists(int id)

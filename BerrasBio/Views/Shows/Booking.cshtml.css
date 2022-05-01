@@ -1,0 +1,45 @@
+﻿body {
+}
+#poster {
+    object-fit: cover;
+    width: 150px;
+    max-width: 30%;
+    aspect-ratio: 27 / 40;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: auto;
+}
+
+.seat-checkbox-container {
+    flex-wrap: wrap;
+    display: inline-flex;
+    width: 50vw;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.seat-checkbox-container > label {
+    flex-wrap: wrap;
+    display: inline-flex;
+    width: 50vw;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.seat-checkbox-wrap {
+    flex-wrap: wrap;
+    width: 50vw;
+    max-width: 500px;
+    display: block;
+    margin: auto;
+}
+
+.seat-checkbox {
+    max-width: 30px;
+    max-height: 30px;
+    height: 5vw;
+    width: 5vw;
+    accent-color: #20a0bf;
+}

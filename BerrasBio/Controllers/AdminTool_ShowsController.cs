@@ -41,6 +41,8 @@ namespace BerrasBio.Controllers
             var show = await _context.Show
                 .Include(s => s.Movie)
                 .Include(s => s.Saloon)
+                    .ThenInclude(s => s.Seats)
+                .Include(s => s.Bookable_Seats)
                 .FirstOrDefaultAsync(m => m.ShowID == id);
             if (show == null)
             {
