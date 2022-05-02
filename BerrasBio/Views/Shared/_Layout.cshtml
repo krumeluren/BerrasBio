@@ -88,22 +88,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://kit.fontawesome.com/7a548851b4.js" crossorigin="anonymous"></script>
-    <script>
-
-        // if mobile screen, start with sidebar collapsed
-        if($( window ).width() <= 1000){
-            console.log("lol")
-            $('#sidebar').toggleClass('active');
-        }
-
-        // toggle sidebar collapse
-        $(document).ready(function () {
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-            });
-        });
-
-    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
