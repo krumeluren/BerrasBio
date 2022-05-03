@@ -18,7 +18,7 @@ namespace BerrasBio.Controllers
         {
             return View();
         }
-        public IActionResult Confirm()
+        public IActionResult Confirm(int[]? selectedSeats)
         {
             return View();
         }
