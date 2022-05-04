@@ -3,3 +3,24 @@
 *@
 @{
 }
+@model BerrasBio.Models.Show
+
+@{
+    var selectedSeats = ViewData["SelectedSeats"] as IEnumerable<Bookable_Seats>;
+    if (Model == null || selectedSeats == null) return;
+    
+    <table class="table">
+        <tbody>
+            <tr>
+                <td></td>
+                <td>
+                    <div>@Model.ShowID</div>
+                </td>
+                <td>
+                    <h5>@selectedSeats.Sum(s => s.Ticket_Price) Totalt</h5>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+}

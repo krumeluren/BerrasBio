@@ -66,71 +66,81 @@
                         }
                     </div>
                 </div>
-                <input type="hidden" asp-for="ShowID" name="id" /> 
-                
-                
+                <input type="hidden" asp-for="ShowID" name="id" />
+
+                <input type="submit" value="Confirm"  class="btn btn-primary" id="confirm-btn"/>
             </div>
-            <input type="submit" value="Confirm" asp-action="Confirm" asp-controller="Bookings" class="btn btn-primary"/>
+
 
         </form>
     }
 
     <p class="seat-count"></p>
     <hr>
-    
+
     <div id="partial"></div>
+    <div id="partialConfirm"></div>
 </div>
 
 
 <script>
-        var checkboxes = document.querySelectorAll('.seat-checkbox-unbooked');
-
-        // add checkboxLogic to all checkboxes for unbooked seats
-        for (var i = 0; i < checkboxes.length; i++) {
-            console.log(checkboxes[i]);
-                checkboxes[i].onchange = checkboxLogic;
-        }
-
-    
-        $(".seat-checkbox-unbooked").click(function () {
-       $.ajax({
-           url: "../../Bookings/SelectedSeats",
-           type: "get",
-           data: $("form").serialize(), 
-           success: function (result) {
-               $("#partial").html(result);
-           }
-       });
-    })
-
-       
-        function checkboxLogic() {
-            var count = 0;
-            //for each checkbox if count is 12 or higher
             var checkboxes = document.querySelectorAll('.seat-checkbox-unbooked');
-            console.log(checkboxes.length);
+
+
+            // add checkboxLogic to all checkboxes for unbooked seats
             for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
-                    count++;
-                    
-                }
+                console.log(checkboxes[i]);
+                    checkboxes[i].onchange = checkboxLogic;
             }
-            // if count is 12 or more, disable all checkboxes that are not checked
-            if(count >= 12){
-                console.log(count)            
+
+
+            $(".seat-checkbox-unbooked").click(function () {
+           $.ajax({
+               url: "../../Bookings/SelectedSeats",
+               type: "get",
+               data: $("form").serialize(),
+               success: function (result) {
+                   $("#partial").html(result);
+               }
+           });
+           $.ajax({
+               url: "../../Bookings/Confirm",
+               type: "get",
+               data: $("form").serialize(),
+               success: function (result) {
+                   $("#partialConfirm").html(result);
+               }
+           });
+        })
+
+
+
+            function checkboxLogic() {
+                var count = 0;
+
+                var checkboxes = document.querySelectorAll('.seat-checkbox-unbooked');
+                //for each checkbox if checkbox is checked, count
                 for (var i = 0; i < checkboxes.length; i++) {
-                    if (!(checkboxes[i].checked)) {
-                        checkboxes[i].disabled = true;
+                    if (checkboxes[i].checked) {
+                        count++;
+
                     }
                 }
-            }
-            else{
-                // enable all checkboxes
-                for (var i = 0; i < checkboxes.length; i++) {
-                    checkboxes[i].disabled = false;
+                // if count is 12 or more, disable all checkboxes that are not checked
+                if(count >= 12){
+                    for (var i = 0; i < checkboxes.length; i++) {
+                        if (!(checkboxes[i].checked)) {
+                            checkboxes[i].disabled = true;
+                        }
+                    }
                 }
+                else{
+                    // enable all checkboxes
+                    for (var i = 0; i < checkboxes.length; i++) {
+                        checkboxes[i].disabled = false;
+                    }
+                }
+                document.querySelector(".seat-count").innerHTML = count;
             }
-            document.querySelector(".seat-count").innerHTML = count;
-        }
 
 </script>

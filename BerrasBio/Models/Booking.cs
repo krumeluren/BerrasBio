@@ -11,7 +11,7 @@
         public virtual ICollection<Bookable_Seats>? Booked_Seats { get; set; }
 
         /// <summary>
-        /// Validate the seats selected by the user before adding a booking
+        /// Business logic. Validate the seats selected by the user before allowing them to be added to a booking
         /// </summary>
         /// <param name="seats"></param>
         /// <returns>true if success</returns>
@@ -25,10 +25,10 @@
                 return false;
             }
 
-            // If seats is longer than 12 seats throw error
-            if (seats.Count() > 12)
+            // If seats is 0 or longer than 12 seats throw error
+            if (seats.Count() <= 0 || seats.Count() > 12 )
             {
-                throw new Exception("You can only book up to 12 seats at a time");
+                //throw new Exception("Selected seats for booking out of allowed range");
                 return false;
             }
             

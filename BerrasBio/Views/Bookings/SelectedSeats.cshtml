@@ -17,30 +17,36 @@
         </tr>
     </thead>
     <tbody id="selected-seats-table">
+        <tr>
+            <td></td>
+            <td><h5>@Model.Sum(s => s.Ticket_Price) Totalt</h5></td>
+        </tr>
+        
 
-        @{
-            int i = 0;
-            foreach (var item in Model)
-            {
-                
-                var saloonSeats = item.Seat.Saloon.Seats.OrderBy(s => s.SeatID);
-                foreach (var seat in saloonSeats)
+            @{
+                int i = 0;
+                if (Model == null) return;
+                foreach (var item in Model)
                 {
-                    i++;
-                    if (seat == item.Seat)
-                    {
-                        <tr>
-                        
-                        <td>@i</td> 
-                        <td>@item.Ticket_Price</td> 
-                        </tr>
-                        
-                    }
-                }
-                i=0;
-            }
-        }
 
+                    var saloonSeats = item.Seat.Saloon.Seats.OrderBy(s => s.SeatID);
+                    foreach (var seat in saloonSeats)
+                    {
+                        i++;
+                        if (seat == item.Seat)
+                        {
+
+                            <tr>
+                            <td>@i</td>
+                            <td>@item.Ticket_Price</td>
+                            </tr>
+
+                        }
+                    }
+                    i = 0;
+                }
+            }
+        
 
 
 

@@ -39,10 +39,18 @@ namespace BerrasBio.Controllers
                 .SingleOrDefaultAsync(s => s.ShowID == id);
             ViewBag.Title = "Boka";
 
+            //if show is null redirect to
+            if (show == null)
+            {
+                return RedirectToAction("Index", "Movies");
+            }
+
+
+
+
             return View(show);
         }
 
-        //use as normal action in Booking controller later
         [HttpPost]
         public async Task<IActionResult> Booking(int[] selectedSeats, int? id)
         {
