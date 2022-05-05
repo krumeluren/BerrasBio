@@ -97,7 +97,7 @@ namespace BerrasBio.Migrations
                         column: x => x.SaloonID,
                         principalTable: "Saloon",
                         principalColumn: "SaloonID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
