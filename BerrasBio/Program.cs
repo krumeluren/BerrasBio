@@ -1,15 +1,30 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using BerrasBio.Data;
+using Microsoft.AspNetCore.Identity;
+using BerrasBio.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 builder.Services.AddDbContext<BerrasBioContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BerrasBioContext")));
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddAutoMapper(typeof(Program));
+// Modify register settings
+builder.Services.AddIdentity<User, IdentityRole>(opt =>
+{
+    opt.Password.RequiredLength = 10;
+    opt.Password.RequireDigit = false;
+    opt.Password.RequireUppercase = false;
+    opt.User.RequireUniqueEmail = true;
+})
+ .AddEntityFrameworkStores<BerrasBioContext>();
 
+// Add services to the container.
+
+
+builder.Services.AddControllersWithViews();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,3 +47,4 @@ app.MapControllerRoute(
     pattern: "{controller=Start}/{action=Index}/{id?}");
 
 app.Run();
+
