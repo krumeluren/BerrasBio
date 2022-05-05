@@ -33,7 +33,8 @@ namespace BerrasBio.Migrations
                     MovieID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Length = table.Column<int>(type: "int", nullable: false)
+                    Length = table.Column<int>(type: "int", nullable: false),
+                    Image_Source = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -96,7 +97,7 @@ namespace BerrasBio.Migrations
                         column: x => x.SaloonID,
                         principalTable: "Saloon",
                         principalColumn: "SaloonID",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -164,9 +165,10 @@ namespace BerrasBio.Migrations
                 column: "BookingID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookable_Seats_SeatID",
+                name: "IX_Bookable_Seats_SeatID_ShowID",
                 table: "Bookable_Seats",
-                column: "SeatID");
+                columns: new[] { "SeatID", "ShowID" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bookable_Seats_ShowID",

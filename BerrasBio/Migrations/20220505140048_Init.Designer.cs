@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BerrasBio.Migrations
 {
     [DbContext(typeof(BerrasBioContext))]
-    [Migration("20220420091813_Init")]
+    [Migration("20220505140048_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,9 +81,10 @@ namespace BerrasBio.Migrations
 
                     b.HasIndex("BookingID");
 
-                    b.HasIndex("SeatID");
-
                     b.HasIndex("ShowID");
+
+                    b.HasIndex("SeatID", "ShowID")
+                        .IsUnique();
 
                     b.ToTable("Bookable_Seats");
                 });
@@ -118,6 +119,10 @@ namespace BerrasBio.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovieID"), 1L, 1);
+
+                    b.Property<string>("Image_Source")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Length")
                         .HasColumnType("int");
