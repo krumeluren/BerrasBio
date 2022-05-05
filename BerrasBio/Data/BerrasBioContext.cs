@@ -5,10 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using BerrasBio.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace BerrasBio.Data
 {
-    public class BerrasBioContext : DbContext
+    public class BerrasBioContext : IdentityDbContext<User>
     {
         public BerrasBioContext (DbContextOptions<BerrasBioContext> options)
             : base(options)
@@ -17,6 +18,9 @@ namespace BerrasBio.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+
             modelBuilder.Entity<Bookable_Seats>(b =>
             {
                 b.HasIndex(e => new { e.SeatID, e.ShowID }).IsUnique();
