@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BerrasBio.Migrations
 {
     [DbContext(typeof(BerrasBioContext))]
-    [Migration("20220505140048_Init")]
+    [Migration("20220505143641_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
