@@ -1,4 +1,5 @@
-﻿@model BerrasBio.Models.Show
+﻿@using BerrasBio.ViewModels
+@model BerrasBio.Models.Show
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -13,34 +14,38 @@
 <a asp-controller="Movies" asp-action="Details" asp-route-id="@Model.MovieID">Tillbaka</a>
 
 <div>
-    <img id="poster" src="../../@Model.Movie.Image_Source">
-    <h4>@Model.Movie.Title</h4>
-    <h6>@Model.Saloon.Name</h6>
-    <p>
+    <div style="position: sticky;">
+        <img id="poster" src="../../@Model.Movie.Image_Source">
+        <h4>@Model.Movie.Title</h4>
+        <h6>@Model.Saloon.Name</h6>
+        <p>
 
-        @{
-            var daysUntilShow = (DateTime.Today - Model.ShowTime.Date).TotalDays;
-            @if (daysUntilShow == 0)
-            {
-                @:Idag
+            @{
+                var daysUntilShow = (DateTime.Today - Model.ShowTime.Date).TotalDays;
+                @if (daysUntilShow == 0)
+                {
+                    @:Idag
+                }
+                else if (daysUntilShow == -1)
+                {
+                    @:Imorgon
+                }
+                else if (daysUntilShow >= -6)
+                {
+                    string showTime = Model.ShowTime.Date.ToString("dddd");
+                    string showDay = showTime.Substring(0, 1).ToUpper() + showTime.Substring(1, showTime.Length - 1);
+                    @showDay
+                }
+                else
+                {
+                    @Model.ShowTime.Date.ToString("d MMMM yyyy")
+                }
+                @Model.ShowTime.ToString(" HH:mm")
             }
-            else if (daysUntilShow == -1)
-            {
-                @:Imorgon
-            }
-            else if (daysUntilShow >= -6)
-            {
-                string showTime = Model.ShowTime.Date.ToString("dddd");
-                string showDay = showTime.Substring(0, 1).ToUpper() + showTime.Substring(1, showTime.Length - 1);
-                @showDay
-            }
-            else
-            {
-                @Model.ShowTime.Date.ToString("d MMMM yyyy")
-            }
-            @Model.ShowTime.ToString(" HH:mm")
-        }
-    </p>
+        </p>
+
+    </div>
+
     <hr>
 
     @using (Html.BeginForm("SelectedSeats", "Bookings"))
@@ -60,18 +65,13 @@
                             }
                             else
                             {
-
                                 <input type="checkbox" class="seat-checkbox" disabled="disabled">
                             }
                         }
                     </div>
                 </div>
                 <input type="hidden" asp-for="ShowID" name="id" />
-
-                <input type="submit" value="Confirm"  class="btn btn-primary" id="confirm-btn"/>
             </div>
-
-
         </form>
     }
 
@@ -79,68 +79,75 @@
     <hr>
 
     <div id="partial"></div>
+    <div id="partialLoginLogout"></div>
     <div id="partialConfirm"></div>
+
+
 </div>
 
 
 <script>
-            var checkboxes = document.querySelectorAll('.seat-checkbox-unbooked');
+    var checkboxes = document.querySelectorAll(".seat-checkbox-unbooked");
+    // add checkboxLogic to all checkboxes for unbooked seats
+    for (var i = 0; i < checkboxes.length; i++) {
+      console.log(checkboxes[i]);
+      checkboxes[i].onchange = checkboxLogic;
+    }
 
+    function UpdateLoginLogout() {
+      $.ajax({
+        url: "../../Shows/BookingLoginLogout",
+        type: "get",
+        success: function (result) {
+          $("#partialLoginLogout").html(result);
+        },
+      });
+    }
 
-            // add checkboxLogic to all checkboxes for unbooked seats
-            for (var i = 0; i < checkboxes.length; i++) {
-                console.log(checkboxes[i]);
-                    checkboxes[i].onchange = checkboxLogic;
-            }
+    UpdateLoginLogout();
 
+    $(".seat-checkbox-unbooked").click(function () {
+      $.ajax({
+        url: "../../Bookings/SelectedSeats",
+        type: "get",
+        data: $("form").serialize(),
+        success: function (result) {
+          $("#partial").html(result);
+        },
+      });
+      $.ajax({
+        url: "../../Bookings/Confirm",
+        type: "get",
+        data: $("form").serialize(),
+        success: function (result) {
+          $("#partialConfirm").html(result);
+        },
+      });
+    });
 
-            $(".seat-checkbox-unbooked").click(function () {
-           $.ajax({
-               url: "../../Bookings/SelectedSeats",
-               type: "get",
-               data: $("form").serialize(),
-               success: function (result) {
-                   $("#partial").html(result);
-               }
-           });
-           $.ajax({
-               url: "../../Bookings/Confirm",
-               type: "get",
-               data: $("form").serialize(),
-               success: function (result) {
-                   $("#partialConfirm").html(result);
-               }
-           });
-        })
+    function checkboxLogic() {
+      var count = 0;
 
-
-
-            function checkboxLogic() {
-                var count = 0;
-
-                var checkboxes = document.querySelectorAll('.seat-checkbox-unbooked');
-                //for each checkbox if checkbox is checked, count
-                for (var i = 0; i < checkboxes.length; i++) {
-                    if (checkboxes[i].checked) {
-                        count++;
-
-                    }
-                }
-                // if count is 12 or more, disable all checkboxes that are not checked
-                if(count >= 12){
-                    for (var i = 0; i < checkboxes.length; i++) {
-                        if (!(checkboxes[i].checked)) {
-                            checkboxes[i].disabled = true;
-                        }
-                    }
-                }
-                else{
-                    // enable all checkboxes
-                    for (var i = 0; i < checkboxes.length; i++) {
-                        checkboxes[i].disabled = false;
-                    }
-                }
-                document.querySelector(".seat-count").innerHTML = count;
-            }
+      var checkboxes = document.querySelectorAll(".seat-checkbox-unbooked");
+      //for each checkbox if checkbox is checked, count
+      for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+          count++;
+        }
+      }
+      // if count is 12 or more, disable all checkboxes that are not checked
+      if (count >= 12) {
+        for (var i = 0; i < checkboxes.length; i++) {
+          if (!checkboxes[i].checked) {
+            checkboxes[i].disabled = true;
+          }
+        }
+      } else {
+        // enable all checkboxes
+        for (var i = 0; i < checkboxes.length; i++) {
+          checkboxes[i].disabled = false;
+        }
+      }
+    }
 
 </script>

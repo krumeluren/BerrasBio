@@ -10,10 +10,13 @@ namespace BerrasBio.Controllers
     {
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-        public UserController(IMapper mapper, UserManager<User> userManager)
+        private readonly SignInManager<User> _signInManager;
+
+        public UserController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _mapper = mapper;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -48,5 +51,36 @@ namespace BerrasBio.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(UserLoginModel userModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var identityResult = await _signInManager.PasswordSignInAsync(userModel.Email, userModel.Password, userModel.RememberMe, false);
+                if (identityResult.Succeeded)
+                {
+                    //return to returnurl
+                    
+
+                    return PartialView();
+
+                }
+                ModelState.AddModelError("", "Fel uppgifter");
+            }
+
+            return PartialView();
+        }
+
+        [HttpPost]
+        public  async Task<IActionResult> Logout()
+        {
+
+            await _signInManager.SignOutAsync();
+
+            return PartialView("_LoginPartial", "Shared");
+        }
+
     }
 }

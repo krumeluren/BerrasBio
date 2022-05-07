@@ -24,6 +24,11 @@ namespace BerrasBio.Controllers
             return View();
         }
 
+        public IActionResult BookingLoginLogout()
+        {
+            return PartialView();
+        }
+
         public async Task<IActionResult> Booking(int? id)
         {
             if (id == null)
@@ -44,10 +49,6 @@ namespace BerrasBio.Controllers
             {
                 return RedirectToAction("Index", "Movies");
             }
-
-
-
-
             return View(show);
         }
 

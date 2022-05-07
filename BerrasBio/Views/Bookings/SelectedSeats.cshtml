@@ -3,6 +3,8 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    if (Model == null) return;
+
 }
 <table class="table">
     <thead>
@@ -19,36 +21,32 @@
     <tbody id="selected-seats-table">
         <tr>
             <td></td>
-            <td><h5>@Model.Sum(s => s.Ticket_Price) Totalt</h5></td>
+
+            <td>
+                <h5>
+                    @Model.Sum(s => s.Ticket_Price)
+                </h5>
+            </td>
         </tr>
-        
+        @{
+            int i = 0;
+            foreach (var item in Model)
+            {
 
-            @{
-                int i = 0;
-                if (Model == null) return;
-                foreach (var item in Model)
+                var saloonSeats = item.Seat.Saloon.Seats.OrderBy(s => s.SeatID);
+                foreach (var seat in saloonSeats)
                 {
-
-                    var saloonSeats = item.Seat.Saloon.Seats.OrderBy(s => s.SeatID);
-                    foreach (var seat in saloonSeats)
+                    i++;
+                    if (seat == item.Seat)
                     {
-                        i++;
-                        if (seat == item.Seat)
-                        {
-
-                            <tr>
+                        <tr>
                             <td>@i</td>
                             <td>@item.Ticket_Price</td>
-                            </tr>
-
-                        }
+                        </tr>
                     }
-                    i = 0;
                 }
+                i = 0;
             }
-        
-
-
-
+        }
     </tbody>
 </table>

@@ -38,6 +38,7 @@ namespace BerrasBio.Controllers
             // Get bookable_seats from selectedSeats array
             IEnumerable<Bookable_Seats> foundSelectedSeats = await _context.Bookable_Seats
                 .Where(b => selectedSeats.Contains(b.Bookable_SeatsID))
+                .Include(b => b.Booking)
                 .Include(s => s.Seat)
                     .ThenInclude(s => s.Saloon)
                         .ThenInclude(s => s.Seats).ToListAsync();
@@ -64,17 +65,52 @@ namespace BerrasBio.Controllers
             // Get bookable_seats from selectedSeats array
             IEnumerable<Bookable_Seats> foundSelectedSeats = await _context.Bookable_Seats
                 .Where(b => selectedSeats.Contains(b.Bookable_SeatsID))
+                .Include(b => b.Booking)
                 .Include(s => s.Seat)
                     .ThenInclude(s => s.Saloon)
                         .ThenInclude(s => s.Seats).ToListAsync();
 
             // Vaildate foundselectedseats
-
             if (!Booking.ValidateSeatsForBooking(foundSelectedSeats))
             {
                 return PartialView();
             }
             return PartialView("SelectedSeats", foundSelectedSeats);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Create(int[]? selectedSeats, int id)
+        {
+            //if user is not logged in
+            if (!User.Identity.IsAuthenticated) return PartialView();
+            
+            //If selectedSeats or show id is null
+            if (id == null || selectedSeats == null) return PartialView();
+
+            //Get show from id
+            var show = await _context.Show.Where(s => s.ShowID == id).SingleOrDefaultAsync();
+
+            // Get bookable_seats from selectedSeats array
+            IEnumerable<Bookable_Seats> foundSelectedSeats = await _context.Bookable_Seats
+                .Where(b => selectedSeats.Contains(b.Bookable_SeatsID))
+                .Include(b => b.Booking)
+                .Include(b => b.Show)
+                .ToListAsync();
+            
+            // if not all seats where found
+            if (foundSelectedSeats.Count() != selectedSeats.Count()) return PartialView();
+            
+            //if any of the seats dont belong to the same show
+            if (!show.ContainsAll(foundSelectedSeats)) return PartialView();
+
+            // validate foundselectedseats
+            if (!Booking.ValidateSeatsForBooking(foundSelectedSeats)) return PartialView();
+
+            // Add new booking
+            var booking = new Booking();
+            booking.ShowID = show.ShowID;
+
+            return PartialView();
         }
 
     }
