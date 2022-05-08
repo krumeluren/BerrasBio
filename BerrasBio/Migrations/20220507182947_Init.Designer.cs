@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BerrasBio.Migrations
 {
     [DbContext(typeof(BerrasBioContext))]
-    [Migration("20220505175144_Identity")]
-    partial class Identity
+    [Migration("20220507182947_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,39 +23,6 @@ namespace BerrasBio.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("BerrasBio.Models.Account", b =>
-                {
-                    b.Property<int>("AccountID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountID"), 1L, 1);
-
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AccountID");
-
-                    b.ToTable("Account");
-                });
 
             modelBuilder.Entity("BerrasBio.Models.Bookable_Seats", b =>
                 {
@@ -97,17 +64,20 @@ namespace BerrasBio.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingID"), 1L, 1);
 
-                    b.Property<int>("AccountID")
-                        .HasColumnType("int");
-
                     b.Property<int>("ShowID")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("BookingID");
 
-                    b.HasIndex("AccountID");
-
                     b.HasIndex("ShowID");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Booking");
                 });
@@ -299,15 +269,15 @@ namespace BerrasBio.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c7e5d430-2ddc-4713-8671-a10014d430de",
-                            ConcurrencyStamp = "9bf1575c-56d8-4139-a844-15d0be2b4d49",
+                            Id = "d03ee015-d83d-47cc-85cf-5475657edc3a",
+                            ConcurrencyStamp = "6e7c882d-56e1-4f09-98ad-f9466d462580",
                             Name = "Visitor",
                             NormalizedName = "VISITOR"
                         },
                         new
                         {
-                            Id = "1dd35101-bb1c-4fd0-80b9-42eed8ef4e5f",
-                            ConcurrencyStamp = "f2f50fa5-ab27-4f05-bce4-67d9d205dc9f",
+                            Id = "30db2dc9-c713-4087-b334-e038de77a6fb",
+                            ConcurrencyStamp = "320d26e1-f4c6-4320-ba4d-1d205e393d2f",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -446,21 +416,19 @@ namespace BerrasBio.Migrations
 
             modelBuilder.Entity("BerrasBio.Models.Booking", b =>
                 {
-                    b.HasOne("BerrasBio.Models.Account", "Account")
-                        .WithMany("Bookings")
-                        .HasForeignKey("AccountID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BerrasBio.Models.Show", "Show")
                         .WithMany("Bookings")
                         .HasForeignKey("ShowID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Account");
+                    b.HasOne("BerrasBio.Models.User", "User")
+                        .WithMany("Bookings")
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("Show");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BerrasBio.Models.Seat", b =>
@@ -544,11 +512,6 @@ namespace BerrasBio.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BerrasBio.Models.Account", b =>
-                {
-                    b.Navigation("Bookings");
-                });
-
             modelBuilder.Entity("BerrasBio.Models.Booking", b =>
                 {
                     b.Navigation("Booked_Seats");
@@ -575,6 +538,11 @@ namespace BerrasBio.Migrations
                 {
                     b.Navigation("Bookable_Seats");
 
+                    b.Navigation("Bookings");
+                });
+
+            modelBuilder.Entity("BerrasBio.Models.User", b =>
+                {
                     b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618

@@ -5,7 +5,7 @@
         public int BookingID { get; set; }
         public int ShowID { get; set; }
         public virtual Show Show { get; set; }
-        public int UserID { get; set; }
+        public string UserId { get; set; }
         public virtual User? User { get; set; }
 
         public virtual ICollection<Bookable_Seats>? Booked_Seats { get; set; }

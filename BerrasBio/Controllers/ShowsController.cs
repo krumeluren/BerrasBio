@@ -41,6 +41,7 @@ namespace BerrasBio.Controllers
                 .Include(s => s.Saloon)
                     .ThenInclude(s => s.Seats)
                 .Include(s => s.Bookable_Seats)
+                    .ThenInclude(s => s.Booking)
                 .SingleOrDefaultAsync(s => s.ShowID == id);
             ViewBag.Title = "Boka";
 

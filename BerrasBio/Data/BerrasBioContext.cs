@@ -27,7 +27,6 @@ namespace BerrasBio.Data
             });
         }
 
-        public DbSet<BerrasBio.Models.Account> Account { get; set; }
 
         public DbSet<BerrasBio.Models.Movie> Movie { get; set; }
 

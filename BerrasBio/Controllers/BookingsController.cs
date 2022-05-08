@@ -2,6 +2,8 @@
 using BerrasBio.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace BerrasBio.Controllers
 {
@@ -78,14 +80,14 @@ namespace BerrasBio.Controllers
             return PartialView("SelectedSeats", foundSelectedSeats);
         }
         
-        [HttpPost]
+       
         public async Task<IActionResult> Create(int[]? selectedSeats, int id)
         {
             //if user is not logged in
-            if (!User.Identity.IsAuthenticated) return PartialView();
-            
+            if (!User.Identity.IsAuthenticated) throw new Exception("User not logged in");
+
             //If selectedSeats or show id is null
-            if (id == null || selectedSeats == null) return PartialView();
+            if (id == null || selectedSeats == null) throw new Exception("No selected seats and or show");
 
             //Get show from id
             var show = await _context.Show.Where(s => s.ShowID == id).SingleOrDefaultAsync();
@@ -96,21 +98,32 @@ namespace BerrasBio.Controllers
                 .Include(b => b.Booking)
                 .Include(b => b.Show)
                 .ToListAsync();
-            
+
             // if not all seats where found
-            if (foundSelectedSeats.Count() != selectedSeats.Count()) return PartialView();
-            
+            if (foundSelectedSeats.Count() != selectedSeats.Count()) throw new Exception("Selected seats do not exist");
+
             //if any of the seats dont belong to the same show
-            if (!show.ContainsAll(foundSelectedSeats)) return PartialView();
+            if (!show.ContainsAll(foundSelectedSeats)) throw new Exception("Selected seats do not belong to the same show");
 
             // validate foundselectedseats
-            if (!Booking.ValidateSeatsForBooking(foundSelectedSeats)) return PartialView();
+            if (!Booking.ValidateSeatsForBooking(foundSelectedSeats)) throw new Exception("Invalid booking");
 
             // Add new booking
             var booking = new Booking();
             booking.ShowID = show.ShowID;
+            booking.UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            _context.Add(booking);
+            _context.SaveChanges();
 
-            return PartialView();
+            // foreach seat in foundSelectedSeats, point to booking
+            foreach (var seat in foundSelectedSeats)
+            {
+                seat.BookingID = booking.BookingID;
+
+            }
+            _context.SaveChanges();
+            
+            return RedirectToAction("Index", "Start");
         }
 
     }

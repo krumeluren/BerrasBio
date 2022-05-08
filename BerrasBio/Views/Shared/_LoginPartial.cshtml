@@ -6,8 +6,6 @@
 <ul id="loginStatus" class="navbar-nav">
     @if (User.Identity.IsAuthenticated)
     {
-
-
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hej @User.Identity?.Name!</a>
 
@@ -25,10 +23,6 @@
         </li>
     }
 </ul>
-
-
-
-
 <script>
     function logout()
     {
