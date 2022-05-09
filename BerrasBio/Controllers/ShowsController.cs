@@ -14,16 +14,6 @@ namespace BerrasBio.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult All()
-        {
-            return View();
-        }
-
         public IActionResult BookingLoginLogout()
         {
             return PartialView();

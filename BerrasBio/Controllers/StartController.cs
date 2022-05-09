@@ -7,7 +7,6 @@ namespace BerrasBio.Controllers
         public IActionResult Index()
         {
             return RedirectToAction("Index", "Movies");
-            return View();
         }
     }
 }

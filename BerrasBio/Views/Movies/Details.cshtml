@@ -36,7 +36,9 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Show show in Model.Shows)
+        @{
+        var sortedShows = Model.Shows.OrderBy(s => s.ShowTime);
+        foreach (Show show in sortedShows)
         {
             if (show.ShowTime >= DateTime.Now)
             {
@@ -44,7 +46,7 @@
                     <td>
                         @show.ShowTime.ToString("HH:mm")
                     </td>
-                    <td>
+                    <td class="text-capitalize">
                         @{
                             var daysUntilShow = (DateTime.Today - show.ShowTime.Date).TotalDays;
                             @if (daysUntilShow == 0)
@@ -57,9 +59,8 @@
                             }
                             else if (daysUntilShow >= -6)
                             {
-                                string showTime = show.ShowTime.Date.ToString("dddd");
-                                string showDay = showTime.Substring(0, 1).ToUpper() + showTime.Substring(1, showTime.Length - 1);
-                                @showDay
+                                
+                                @show.ShowTime.Date.ToString("dddd");
                             }
                             else
                             {
@@ -81,6 +82,7 @@
                 </tr>
             }
 
+        }
         }
     </tbody>
 </table>

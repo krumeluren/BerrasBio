@@ -23,6 +23,9 @@ namespace BerrasBio.Controllers
         // GET: AdminTool_Bookable_Seats
         public async Task<IActionResult> Index()
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+
             var berrasBioContext = _context.Bookable_Seats.Include(b => b.Booking).Include(b => b.Seat).Include(b => b.Show);
             return View(await berrasBioContext.ToListAsync());
         }
@@ -30,6 +33,9 @@ namespace BerrasBio.Controllers
         // GET: AdminTool_Bookable_Seats/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+
             if (id == null)
             {
                 return NotFound();
@@ -51,6 +57,9 @@ namespace BerrasBio.Controllers
         // GET: AdminTool_Bookable_Seats/Create
         public IActionResult Create()
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+            
             ViewData["BookingID"] = new SelectList(_context.Set<Booking>(), "BookingID", "BookingID");
             ViewData["SeatID"] = new SelectList(_context.Set<Seat>(), "SeatID", "SeatID");
             ViewData["ShowID"] = new SelectList(_context.Show, "ShowID", "ShowID");
@@ -64,6 +73,9 @@ namespace BerrasBio.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Bookable_SeatsID,Ticket_Price,ShowID,SeatID,BookingID")] Bookable_Seats bookable_Seats)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+            
             if (ModelState.IsValid)
             {
                 _context.Add(bookable_Seats);
@@ -79,6 +91,9 @@ namespace BerrasBio.Controllers
         // GET: AdminTool_Bookable_Seats/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");            
+
             if (id == null)
             {
                 return NotFound();
@@ -102,6 +117,9 @@ namespace BerrasBio.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Bookable_SeatsID,Ticket_Price,ShowID,SeatID,BookingID")] Bookable_Seats bookable_Seats)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+
             if (id != bookable_Seats.Bookable_SeatsID)
             {
                 return NotFound();
@@ -136,6 +154,9 @@ namespace BerrasBio.Controllers
         // GET: AdminTool_Bookable_Seats/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");            
+            
             if (id == null)
             {
                 return NotFound();
@@ -159,6 +180,10 @@ namespace BerrasBio.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+
+            
             var bookable_Seats = await _context.Bookable_Seats.FindAsync(id);
             _context.Bookable_Seats.Remove(bookable_Seats);
             await _context.SaveChangesAsync();

@@ -1,5 +1,4 @@
-﻿
-@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
@@ -9,7 +8,7 @@
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hej @User.Identity?.Name!</a>
 
-            <button type="submit" class="nav-link btn btn-link text-dark" onclick="logout()">
+            <button type="submit" class="nav-link btn btn-link text-dark" onclick="SignOut()">
                 Logga ut
             </button>
 
@@ -19,19 +18,29 @@
     {
         <li class="nav-item">
             <a class="nav-link text-dark" asp-controller="User" asp-action="Register">Registrera</a>
-            <a class="nav-link text-dark" asp-controller="User" asp-action="Login">Logga in</a>
+            
+            <button type="submit" class="nav-link btn btn-link text-dark" onclick="openLoginModal()">
+                Logga in
+            </button>         
         </li>
     }
 </ul>
 <script>
-    function logout()
+    function SignOut()
     {
         $.ajax({
             url: '../../User/Logout',
             type: 'POST',
             success: function (result) {
-                $("#loginStatus").html(result);
+             location.reload();
+
             }
         })
     }
+
+
+
+
+
+
 </script>

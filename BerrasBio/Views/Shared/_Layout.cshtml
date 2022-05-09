@@ -1,4 +1,7 @@
-﻿
+﻿@using BerrasBio.ViewModels
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,32 +51,15 @@
 <body>
 
     <header id="header-menu">
-        <div id="header-title"> <h3>Berras Bio</h3> </div>
-        <ul>
-            <li>
-                <a id="nav-item" asp-area="" asp-controller="Start" asp-action="Index">Start</a>
-            </li>
-            <li>
-                <a id="nav-item" asp-area="" asp-controller="Movies" asp-action="Index">Alla Filmer</a>
-            </li>
-            <li>
-                <a id="nav-item" asp-area="" asp-controller="Shows" asp-action="All">Kommande Föreställningar</a>
-            </li>
-            <li>
-                <a id="nav-item" asp-area="" asp-controller="AdminTool_Accounts" asp-action="Index" style="color: red;">Admin: Add Accounts</a>
-            </li>
-            <li>
-                <a id="nav-item" asp-area="" asp-controller="AdminTool_Shows" asp-action="Index" style="color: red;">Admin: Add Shows</a>
-            </li>
-            <li>
-                <a id="nav-item" asp-area="" asp-controller="AdminTool_Movies" asp-action="Index" style="color: red;">Admin: Add Movies</a>
-            </li>
-        </ul>
-
-        <partial name="_LoginPartial" />
-
+        <div id="header-title"><h3><a id="nav-item" asp-area="" asp-controller="Start" asp-action="Index">Berras Bio</a> </h3> </div>
+        <ul id="navbar"></ul>
+        <div class="navbar-expand-sm ">
+            <partial name="_LoginPartial" />
+        </div>
     </header>
-    
+
+    <partial name="~/Views/User/Login.cshtml" model="new UserLoginModel()" />
+
 
 
     <div class="wrapper">
@@ -96,3 +82,29 @@
 </body>
 </html>
 
+<script type="text/javascript">
+
+    function openLoginModal(){
+        $('#loginModal').modal('show');
+    }
+
+    $("#loginModalSubmit").click(function () {
+        $("#loginModal").modal('hide');
+    });
+
+    $("#loginModalClose").click(function () {
+        $("#loginModal").modal('hide');
+    });
+    
+    
+    function RenderNavbar() {
+      $.ajax({
+        url: "../../Navbar/Menu",
+        type: "POST",
+        success: function (result) {
+            document.getElementById("navbar").innerHTML = result;
+        },
+      });
+    }
+    RenderNavbar()
+</script>

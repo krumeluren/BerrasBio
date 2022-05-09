@@ -11,6 +11,7 @@ using BerrasBio.Models;
 
 namespace BerrasBio.Controllers
 {
+
     public class AdminTool_ShowsController : Controller
     {
         private readonly BerrasBioContext _context;
@@ -23,6 +24,9 @@ namespace BerrasBio.Controllers
         // GET: AdminTool_Shows
         public async Task<IActionResult> Index()
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+
             var berrasBioContext = _context.Show
                 .Include(s => s.Movie)
                 .Include(s => s.Saloon)
@@ -33,6 +37,9 @@ namespace BerrasBio.Controllers
         // GET: AdminTool_Shows/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+
             if (id == null)
             {
                 return NotFound();
@@ -55,8 +62,20 @@ namespace BerrasBio.Controllers
         // GET: AdminTool_Shows/Create
         public IActionResult Create()
         {
-            ViewData["MovieID"] = new SelectList(_context.Movie, "MovieID", "MovieID");
-            ViewData["SaloonID"] = new SelectList(_context.Set<Saloon>(), "SaloonID", "SaloonID");
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+
+            //create a list of movies to be used in the dropdown
+            var movies = _context.Movie.ToList();
+            //create a list of saloons to be used in the dropdown
+            var saloons = _context.Saloon.ToList();
+            //Create a selectlist of movies
+            var movieSelectList = new SelectList(movies, "MovieID", "Title");
+            //Create a selectlist of saloons
+            var saloonSelectList = new SelectList(saloons, "SaloonID", "Name");
+
+            ViewData["MovieID"] = movieSelectList;
+            ViewData["SaloonID"] = saloonSelectList;
             return View();
         }
 
@@ -67,6 +86,9 @@ namespace BerrasBio.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ShowID,ShowTime,MovieID,SaloonID")] Show show)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+
             if (ModelState.IsValid)
             {
                 _context.Add(show);
@@ -100,6 +122,9 @@ namespace BerrasBio.Controllers
         // GET: AdminTool_Shows/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+
             if (id == null)
             {
                 return NotFound();
@@ -122,6 +147,9 @@ namespace BerrasBio.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ShowID,ShowTime,MovieID,SaloonID")] Show show)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+
             if (id != show.ShowID)
             {
                 return NotFound();
@@ -155,6 +183,9 @@ namespace BerrasBio.Controllers
         // GET: AdminTool_Shows/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+            
             if (id == null)
             {
                 return NotFound();
@@ -177,6 +208,9 @@ namespace BerrasBio.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+
             var show = await _context.Show.FindAsync(id);
             _context.Show.Remove(show);
             await _context.SaveChangesAsync();

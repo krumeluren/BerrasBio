@@ -25,12 +25,18 @@ namespace BerrasBio.Controllers
         // GET: AdminTool_Movies
         public async Task<IActionResult> Index()
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");            
+            
             return View(await _context.Movie.ToListAsync());
         }
 
         // GET: AdminTool_Movies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+            
             if (id == null)
             {
                 return NotFound();
@@ -49,6 +55,9 @@ namespace BerrasBio.Controllers
         // GET: AdminTool_Movies/Create
         public IActionResult Create()
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+            
             return View();
         }
 
@@ -59,6 +68,9 @@ namespace BerrasBio.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MovieID,Title,Length,Image_Source")] Movie movie)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+            
             if (ModelState.IsValid)
             {
                 _context.Add(movie);
@@ -71,6 +83,9 @@ namespace BerrasBio.Controllers
         // GET: AdminTool_Movies/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+
             if (id == null)
             {
                 return NotFound();
@@ -91,6 +106,9 @@ namespace BerrasBio.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("MovieID,Title,Length,Image_Source")] Movie movie)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+
             if (id != movie.MovieID)
             {
                 return NotFound();
@@ -122,6 +140,9 @@ namespace BerrasBio.Controllers
         // GET: AdminTool_Movies/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+
             if (id == null)
             {
                 return NotFound();
@@ -142,6 +163,9 @@ namespace BerrasBio.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //Admin role check
+            if (!User.IsInRole("Administrator")) return RedirectToAction(nameof(StartController.Index), "Start");
+
             var movie = await _context.Movie.FindAsync(id);
             _context.Movie.Remove(movie);
             await _context.SaveChangesAsync();

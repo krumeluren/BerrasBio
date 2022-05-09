@@ -9,8 +9,6 @@
     ViewData["Title"] = "Boka";
 }
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<h1>@Model.MovieID</h1>
-
 <a asp-controller="Movies" asp-action="Details" asp-route-id="@Model.MovieID">Tillbaka</a>
 
 <div>
@@ -60,7 +58,7 @@
 
                             if (seat.Booking == null)
                             {
-                                <input type="checkbox" onclick="LoadPartialViews()" class="seat-checkbox seat-checkbox-unbooked" value="@seat.Bookable_SeatsID" name="selectedSeats">
+                                <input type="checkbox" onclick="RenderPartialViews()" class="seat-checkbox seat-checkbox-unbooked" value="@seat.Bookable_SeatsID" name="selectedSeats">
 
                             }
                             else
@@ -77,8 +75,8 @@
 
     <p class="seat-count"></p>
     <hr>
-    <div id="partial"></div>
-    <div id="partialLoginLogout"></div>
+    <div id="partialSelectedSeats"></div>
+    <partial name="~/Views/Shows/BookingLoginLogout.cshtml" model="new UserLoginModel()"/>
     <div id="partialConfirm"></div>
 
 </div>
@@ -91,11 +89,10 @@
       console.log(checkboxes[i]);
       checkboxes[i].onchange = checkboxLogic;
     }
-
        
-    LoadPartialViews()
+    RenderPartialViews()
     
-    UpdateLoginLogout()
+    
     
     function UpdateLoginLogout() {
       $.ajax({
@@ -107,13 +104,13 @@
       });
     }
     
-    function LoadPartialViews(){
+    function RenderPartialViews(){
       $.ajax({
         url: "../../Bookings/SelectedSeats",
         type: "get",
         data: $("form").serialize(),
         success: function (result) {
-          $("#partial").html(result);
+          $("#partialSelectedSeats").html(result);
         },
       });
       $.ajax({
@@ -125,6 +122,8 @@
         },
       })
     }
+
+
 
    
     function checkboxLogic() {

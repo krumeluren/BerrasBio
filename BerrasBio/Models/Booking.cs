@@ -4,7 +4,7 @@
     {
         public int BookingID { get; set; }
         public int ShowID { get; set; }
-        public virtual Show Show { get; set; }
+        public virtual Show? Show { get; set; }
         public string UserId { get; set; }
         public virtual User? User { get; set; }
 
@@ -22,13 +22,14 @@
             // If seats is null, throw error, return false
             if (seats == null)
             {
-                throw new ArgumentNullException(nameof(seats));
+                //throw new ArgumentNullException(nameof(seats));
                 return false;
             }
 
             // If seats is 0 or longer than 12 seats
             if (seats.Count() <= 0 || seats.Count() > 12 )
             {
+                //throw new Exception("You must select between 1 and 12 seats");
                 return false;
             }
             
@@ -37,8 +38,8 @@
                 // If any of the seats are already booked throw error
                 if (seat.Booking != null)
                 {
-                    throw new Exception("You cannot book seats that are already booked");
-                    return false;
+                    //throw new Exception("You cannot book seats that are already booked");
+                    return false;                    
                 }
             }
             

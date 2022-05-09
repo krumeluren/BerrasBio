@@ -5,8 +5,6 @@ using BerrasBio.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
 builder.Services.AddDbContext<BerrasBioContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BerrasBioContext")));
 
@@ -21,8 +19,12 @@ builder.Services.AddIdentity<User, IdentityRole>(opt =>
 })
  .AddEntityFrameworkStores<BerrasBioContext>();
 
-// Add services to the container.
+builder.Services.ConfigureApplicationCookie(config =>
+{
+    config.LoginPath = "/User/Login";
+});
 
+// Add services to the container
 
 builder.Services.AddControllersWithViews();
 var app = builder.Build();
@@ -49,4 +51,3 @@ app.MapControllerRoute(
     pattern: "{controller=Start}/{action=Index}/{id?}");
 
 app.Run();
-

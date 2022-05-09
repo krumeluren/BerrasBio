@@ -1,0 +1,158 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+@model BerrasBio.Models.User
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<link rel="stylesheet" href="~/images/movie_poster/" asp-append-version="true" />
+@{
+
+//button to delete my account
+<form asp-action="DeleteAccount" asp-controller="User" method="post">
+
+
+    
+</form>
+
+    <div class="p-5 text-center bg-light">
+        <h1 class="mb-3">Konto</h1>
+        <h4 class="mb-3">Bokningshistorik</h4>
+    </div>
+    <div class="px-4 px-lg-0">
+        <div class="pb-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5 p-1 bg-white rounded shadow-sm mb-10">
+                        <div class="table-responsive">
+
+
+                            @{
+                                var sortedBookings = Model.Bookings.OrderBy(b => b.Show.ShowTime).ToList();
+
+                                //get all bookings that are not in the past
+                                var bookings = sortedBookings.Where(b => b.Show.ShowTime > DateTime.Now).ToList();
+
+                                //get all bookings that are in the past
+                                var pastBookings = sortedBookings.Where(b => b.Show.ShowTime < DateTime.Now).ToList();
+                            }
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="border-0 bg-light">
+                                            <div class="p-2 px-3 text-uppercase text-info">Aktiva bokningar</div>
+                                        </th>
+                                        <th scope="col" class="border-0 bg-light">
+                                            
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="border-0 bg-light">
+                                            <div class="p-2 px-3 text-uppercase">Film / Salong</div>
+                                        </th>
+                                        <th scope="col" class="border-0 bg-light">
+                                            <div class="py-2 text-uppercase">Pris / Antal</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var booking in bookings)
+                                    {
+                                        <tr>
+                                            <th scope="row" class="border-0">
+                                                <div class="p-2">
+                                                    <img src="../../@booking.Show.Movie.Image_Source" alt="" width="70" class="img-fluid rounded shadow-sm">
+                                                    <div class="ml-3 d-inline-block align-middle">
+                                                        <h5 class="mb-0 text-dark d-inline-block align-middle">
+                                                            @booking.Show.Movie.Title
+                                                        </h5>
+                                                        <span class="text-muted font-weight-normal font-italic d-block">
+                                                            <span class="text-muted fw-light font-italic ">
+                                                                Salong:
+                                                            </span>
+                                                            @booking.Show.Saloon.Name
+                                                        </span>
+                                                        <span class="text-muted fw-normal font-italic d-block">@booking.Show.ShowTime.ToString("HH:mm ddd dd MMM yyy")</span>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <td class="border-0 align-middle">
+
+                                                <strong class="text-secondary">@booking.Booked_Seats.Count() st</strong>
+                                                <span style="white-space: nowrap;" class="text-muted text-secondary  font-italic  d-block">
+                                                    @booking.Show.Bookable_Seats.First().Ticket_Price SEK/st
+                                                </span>
+                                                <strong style="white-space: nowrap;">@booking.Booked_Seats.Sum(s => s.Ticket_Price) SEK</strong>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="border-0 bg-light">
+                                            <div class="p-2 px-3 text-uppercase text-warning">Arkiverade bokningar</div>
+                                        </th>
+                                        <th scope="col" class="border-0 bg-light">
+                                            
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="border-0 bg-light">
+                                            <div class="p-2 px-3 text-uppercase">Film / Salong</div>
+                                        </th>
+                                        <th scope="col" class="border-0 bg-light">
+                                            <div class="py-2 text-uppercase">Pris / Antal</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var booking in pastBookings)
+                                    {
+                                        <tr>
+                                            <th scope="row" class="border-0">
+                                                <div class="p-2">
+                                                    <img src="../../@booking.Show.Movie.Image_Source" alt="" width="70" class="img-fluid rounded shadow-sm">
+                                                    <div class="ml-3 d-inline-block align-middle">
+                                                        <h5 class="mb-0 text-dark d-inline-block align-middle">
+                                                            @booking.Show.Movie.Title
+                                                        </h5>
+                                                        <span class="text-muted font-weight-normal font-italic d-block">
+                                                            <span class="text-muted fw-light font-italic ">
+                                                                Salong:
+                                                            </span>
+                                                            @booking.Show.Saloon.Name
+                                                        </span>
+                                                        <span class="text-muted fw-normal font-italic d-block">@booking.Show.ShowTime.ToString("HH:mm ddd dd MMM yyy")</span>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <td class="border-0 align-middle">
+
+                                                <strong class="text-secondary">@booking.Booked_Seats.Count() st</strong>
+                                                <span style="white-space: nowrap;" class="text-muted text-secondary  font-italic  d-block">
+                                                    @booking.Show.Bookable_Seats.First().Ticket_Price SEK/st
+                                                </span>
+                                                <strong style="white-space: nowrap;">@booking.Booked_Seats.Sum(s => s.Ticket_Price) SEK</strong>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+}
+
+
+

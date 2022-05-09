@@ -50,13 +50,10 @@
     <thead>
         <tr>
             <th>
-                Bookable seats
+                Pris
             </th>
             <th>
                 Seat ID
-            </th>
-            <th>
-                Show ID
             </th>
             <th></th>
         </tr>
@@ -66,13 +63,10 @@
         {
             <tr>
                 <td>
-                    <p>@seat.Bookable_SeatsID</p>
+                    <p>@seat.Ticket_Price</p>
                 </td>
                 <td>
                     <p>@seat.SeatID </p>
-                </td>
-                <td>
-                    <p>@seat.ShowID</p>
                 </td>
                 <td>
                     <a asp-controller="AdminTool_Bookable_Seats" asp-action="Edit" asp-route-id="@seat.Bookable_SeatsID">Edit</a> |

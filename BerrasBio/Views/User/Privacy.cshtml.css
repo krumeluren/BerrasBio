@@ -1,0 +1,12 @@
+﻿
+#poster {
+    object-fit: cover;
+    height: 10vh;
+    min-height: 60px;
+    aspect-ratio: 27 / 40;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: auto;
+    
+}

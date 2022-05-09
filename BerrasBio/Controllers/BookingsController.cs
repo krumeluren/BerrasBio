@@ -16,17 +16,12 @@ namespace BerrasBio.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public async Task<IActionResult> Confirm(int[]? selectedSeats, int id)
+        public async Task<IActionResult> Confirm(int[]? selectedSeats, int? id)
         {
             if (id == null || selectedSeats == null)
             {
                 throw new ArgumentNullException("Selected seats cannot be null");
-                return NotFound();
+                
             }
 
             var show = await _context.Show
@@ -81,7 +76,7 @@ namespace BerrasBio.Controllers
         }
         
        
-        public async Task<IActionResult> Create(int[]? selectedSeats, int id)
+        public async Task<IActionResult> Create(int[]? selectedSeats, int? id)
         {
             //if user is not logged in
             if (!User.Identity.IsAuthenticated) throw new Exception("User not logged in");
@@ -92,6 +87,8 @@ namespace BerrasBio.Controllers
             //Get show from id
             var show = await _context.Show.Where(s => s.ShowID == id).SingleOrDefaultAsync();
 
+            //If show date is before now
+            if (show.ShowTime < DateTime.Now) throw new Exception("Show is in the past");
             // Get bookable_seats from selectedSeats array
             IEnumerable<Bookable_Seats> foundSelectedSeats = await _context.Bookable_Seats
                 .Where(b => selectedSeats.Contains(b.Bookable_SeatsID))
