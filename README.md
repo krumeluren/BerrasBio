@@ -30,4 +30,4 @@ Man får gå in i databasen och titta i
 och ändra värdet i dbo.AspNetUserRoles.RoleId till det AspNetRoles.Id som man vill ha för en viss användare
 sedan får användaren logga in på nytt på webbappen för att få sina behörigheter
 
-![alt text](https://github.com/krumeluren/BerrasBio/blob/master/BerrasBio/_DbDiagram.pdf)
+![DB Diagram](https://github.com/krumeluren/BerrasBio/blob/master/BerrasBio/_DbDiagram.pdf)
