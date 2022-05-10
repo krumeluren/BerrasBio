@@ -2,6 +2,9 @@
 
 namespace BerrasBio.ViewModels;
 
+/// <summary>
+/// ViewModel for the register form
+/// </summary>
 public class UserRegistrationModel
 {
     public string FirstName { get; set; }

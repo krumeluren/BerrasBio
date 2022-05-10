@@ -6,6 +6,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BerrasBio.ViewModels
 {
+    /// <summary>
+    /// ViewModel for the login form
+    /// </summary>
     public class UserLoginModel
     {
         [Required]
