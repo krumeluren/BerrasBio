@@ -1,23 +1,25 @@
 ﻿
 För att starta igång webbappen
 
-1: Kör programmet så att webbsidan visas 
+1: kör Update-Database för att skapa databasen
 
-2: Avsluta programmet och stäng webbsidan
+2: Kör programmet så att webbsidan visas 
 
-3: Gå till mappen SQL QUERIES och kör alla SQL filer förutom _seeding. Välj databasanslutning "BerrasBioContext"
+3: Avsluta programmet och stäng webbsidan
 
-4: Kör _seeding.sql för att generera test/startdata. Kör om när du vill för att återställa / Lägg till egen startdata
+4: Gå till mappen SQL QUERIES och kör alla SQL filer förutom _seeding. Välj databasanslutning "BerrasBioContext"
 
-5: Starta programmet igen
+5: Kör _seeding.sql för att generera test/startdata. Kör om när du vill för att återställa / Lägg till egen startdata
 
-6: Gå till "Registera" i menyn
+6: Starta programmet igen
 
-7: Skapa ett konto. Det första kontot blir administratör automatiskt (logik i Controllers/UserController.Register)
+7: Gå till "Registera" i menyn
 
-8: Logga in med det nya kontot.
+8: Skapa ett konto. Det första kontot blir administratör automatiskt (logik i Controllers/UserController.Register)
 
-9: Nu kan administratören ha tillgång till admin-verktyg som visas som röda knappar i menyn.
+9: Logga in med det nya kontot.
+
+10: Nu kan administratören ha tillgång till admin-verktyg som visas som röda knappar i menyn.
 
 
 
