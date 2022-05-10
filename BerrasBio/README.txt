@@ -1,6 +1,8 @@
 ﻿
 För att starta igång webbappen
 
+Valfritt: Ändra namn på databasen i appsettings.json
+
 1: kör Update-Database för att skapa databasen
 
 2: Kör programmet så att webbsidan visas 
