@@ -16,6 +16,13 @@ namespace BerrasBio.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Partial view for user to confirm a booking
+        /// </summary>
+        /// <param name="selectedSeats"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public async Task<IActionResult> Confirm(int[]? selectedSeats, int? id)
         {
             if (id == null || selectedSeats == null)
@@ -42,7 +49,6 @@ namespace BerrasBio.Controllers
             
             if (show == null || !Booking.ValidateSeatsForBooking(foundSelectedSeats))
             {
-                // return to booking page
                 return PartialView();
             }
 
@@ -50,8 +56,12 @@ namespace BerrasBio.Controllers
                       
             return PartialView("Confirm", show);
         }
-        
 
+        /// <summary>
+        /// Returns a partial view of list of selected seats
+        /// </summary>
+        /// <param name="selectedSeats"></param>
+        /// <returns></returns>
         public async Task<IActionResult> SelectedSeats(int[]? selectedSeats)
         {
             if (selectedSeats == null)
@@ -74,8 +84,15 @@ namespace BerrasBio.Controllers
             }
             return PartialView("SelectedSeats", foundSelectedSeats);
         }
-        
-       
+
+
+        /// <summary>
+        /// Creates a booking for the logged in user and adds the selected seats to the booking
+        /// </summary>
+        /// <param name="selectedSeats"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<IActionResult> Create(int[]? selectedSeats, int? id)
         {
             //if user is not logged in

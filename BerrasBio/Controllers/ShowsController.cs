@@ -14,11 +14,20 @@ namespace BerrasBio.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// PartialView for Login/Logout on a booking page
+        /// </summary>
+        /// <returns></returns>
         public IActionResult BookingLoginLogout()
         {
             return PartialView();
         }
 
+        /// <summary>
+        /// View for a booking
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Booking(int? id)
         {
             if (id == null)
@@ -42,22 +51,5 @@ namespace BerrasBio.Controllers
             }
             return View(show);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Booking(int[] selectedSeats, int? id)
-        {
-            var show = await _context.Show
-                .Include(s => s.Movie)
-                .Include(s => s.Saloon)
-                    .ThenInclude(s => s.Seats)
-                .Include(s => s.Bookable_Seats)
-                .SingleOrDefaultAsync(s => s.ShowID == id);
-            ViewBag.Title = "Boka";
-            ViewBag.SelectedSeats = selectedSeats;
-            return View(show);
-        }
-
-
-
     }
 }

@@ -6,12 +6,12 @@
             //if user is not logged in
             if (!User.Identity.IsAuthenticated)
             {
-                <h6 class="text-primary">Du måste vara inloggad för att kunna boka</h6>
+                <h6 class="text-warning">Du måste vara inloggad för att kunna boka</h6>
                 <button id="BookingLogin" class="btn btn-primary" onclick="openLoginModal()">Logga in</button>
             }
             else
             {
-                <h6 class="text-primary">Inloggad som @User.Identity?.Name</h6>
+                <h6 class="text-warning">Inloggad som @User.Identity?.Name</h6>
                 <button id="BookingLogout" class="btn btn-secondary" >Byt Konto</button>
             }
         }

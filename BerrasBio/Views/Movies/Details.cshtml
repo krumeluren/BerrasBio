@@ -4,30 +4,36 @@
 *@
 @{
 }
+
+
 <link rel="stylesheet" href="~/images/movie_poster/" asp-append-version="true" />
 
-<div class="movie">
-    <img id="poster" src="../../@Model.Image_Source">
-    <a href="@Url.Action("Details", "Movies", new { id = Model.MovieID })">
+<div id="background-poster" class="bg-image"
+     style="background-image: url('../../@Model.Image_Source') ">
+</div>
 
-        <p>@Model.Title</p>
+<div class="movie" style="text-align: center;">
+    <img id="poster" src="../../@Model.Image_Source">
+    <a style="text-decoration: none;" href="@Url.Action("Details", "Movies", new { id = Model.MovieID })">
+        <div style="color: white;" class="p-2 px-3 text-uppercase"><h5>@Model.Title</h5></div>
     </a>
-    <p>
+    <p  style="color: white;" class="p-2 px-3 text-uppercase">
         @TimeSpan.FromSeconds(Model.Length).TotalMinutes minuter
     </p>
 </div>
+
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                Tid
+                <h5 class="p-2 px-3 text-uppercase">Tid</h5>
             </th>
             <th>
 
             </th>
             <th>
-                Biljetter
+                <h5 class="p-2 px-3 text-uppercase">Biljetter</h5>
             </th>
             <th>
 
@@ -37,52 +43,64 @@
     </thead>
     <tbody>
         @{
-        var sortedShows = Model.Shows.OrderBy(s => s.ShowTime);
-        foreach (Show show in sortedShows)
-        {
-            if (show.ShowTime >= DateTime.Now)
+            var sortedShows = Model.Shows.OrderBy(s => s.ShowTime);
+            foreach (Show show in sortedShows)
             {
-                <tr>
-                    <td>
-                        @show.ShowTime.ToString("HH:mm")
-                    </td>
-                    <td class="text-capitalize">
-                        @{
-                            var daysUntilShow = (DateTime.Today - show.ShowTime.Date).TotalDays;
-                            @if (daysUntilShow == 0)
-                            {
-                                @:Idag
-                            }
-                            else if (daysUntilShow == -1)
-                            {
-                                @:Imorgon
-                            }
-                            else if (daysUntilShow >= -6)
-                            {
-                                
-                                @show.ShowTime.Date.ToString("dddd");
-                            }
-                            else
-                            {
-                                @show.ShowTime.Date.ToString("d MMM yyyy")
-                            }
-                        }
-                    </td>
-                    <td>
-                        @show.Bookable_Seats.Count(a => a.Booking == null)
-                        kvar av
-                        @Html.DisplayFor(modelItem => show.Bookable_Seats.Count)
-                    </td>
-                    <td>
+                if (show.ShowTime >= DateTime.Now)
+                {
+                    <tr>
+                        <td>
+                            <h6 class="p-2 px-3 text-uppercase">@show.ShowTime.ToString("HH:mm")</h6>
 
-                        <a asp-controller="Shows" asp-action="Booking" asp-route-id="@show.ShowID">
-                            <button>Boka</button>
-                        </a>
-                    </td>
-                </tr>
+                        </td>
+                        <td>
+                            <h6 class=" p-2 px-2 text-uppercase">
+                                @{
+                                    var daysUntilShow = (DateTime.Today - show.ShowTime.Date).TotalDays;
+                                    @if (daysUntilShow == 0)
+                                    {
+                                        @:Idag
+                                    }
+                                    else if (daysUntilShow == -1)
+                                    {
+                                        @:Imorgon
+                                    }
+                                    else if (daysUntilShow >= -6)
+                                    {
+
+                                        @show.ShowTime.Date.ToString("dddd")
+                                        ;
+                                    }
+                                    else
+                                    {
+                                        @show.ShowTime.Date.ToString("d MMM yyyy")
+                                    }
+                                }
+                            </h6>
+
+                        </td>
+                        <td>
+                            <h6 class="p-2 px-3 text-uppercase">
+
+                                @show.Bookable_Seats.Count(a => a.Booking == null)
+                                kvar av
+                                @Html.DisplayFor(modelItem => show.Bookable_Seats.Count)
+
+                            </h6>
+
+                        </td>
+                        <td>
+
+                            <a asp-controller="Shows" asp-action="Booking" asp-route-id="@show.ShowID">
+                                <button class="btn btn-primary">Boka</button>
+                            </a>
+                        </td>
+                    </tr>
+                }
+
             }
-
-        }
         }
     </tbody>
 </table>
+
+

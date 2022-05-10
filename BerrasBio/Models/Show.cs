@@ -24,7 +24,7 @@
         public bool ContainsAll(IEnumerable<Bookable_Seats> selectedSeats)
         {
             // if all selectedSeats exist in Bookable_Seats
-            return selectedSeats.All(seat => Bookable_Seats.Contains(seat));
+            return selectedSeats.All(selectedSeat => Bookable_Seats.Contains(selectedSeat));
         }
     }
 

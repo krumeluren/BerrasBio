@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://kit.fontawesome.com/7a548851b4.js" crossorigin="anonymous"></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BerrasBio</title>
@@ -12,57 +13,34 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BerrasBio.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="_Layout.cshtml.css" asp-append-version="true" />
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
-        #nav-item {
-            color: #8b8d99;
-            text-decoration: none;
-            transition: 0.3s all;
-            transition-delay: .1s;
-        }
 
-            #nav-item:hover {
-                color: black;
-                transition-delay: 0s;
-            }
-
-        #header-menu {
-            background-color: white;
-            display: flex;
-            border-bottom: 1px solid lightgray;
-            min-height: 80px;
-        }
-
-        @@media (max-width: 500px) {
-            #header-menu {
-                display: block;
-            }
-
-                #header-menu > #header-title {
-                    height: 50px;
-                    text-align: left;
-                    white-space: nowrap;
-                    padding-left: 28px;
-                }
-        }
     </style>
 
 </head>
 <body>
 
     <header id="header-menu">
-        <div id="header-title"><h3><a id="nav-item" asp-area="" asp-controller="Start" asp-action="Index">Berras Bio</a> </h3> </div>
+        </button>
+        <div id="header-title"><h3><a id="nav-item" asp-area="" asp-controller="Start" asp-action="Index">Berras Bio</a> </h3></div>
         <ul id="navbar"></ul>
-        <div class="navbar-expand-sm ">
-            <partial name="_LoginPartial" />
-        </div>
+        <partial name="_LoginPartial" />
     </header>
+
+    <div id="menu-open" type="button"
+         onclick='$("#header-menu").toggle();'>
+        <i class="fa-solid fa-bars fa-4x"></i>
+    </div>
+
+
 
     <partial name="~/Views/User/Login.cshtml" model="new UserLoginModel()" />
 
 
 
-    <div class="wrapper">
+    <div class="wrapper" style="background-color: transparent">
         <div class="container">
             <main role="main" class="pb-3">
                 @RenderBody()
@@ -95,8 +73,8 @@
     $("#loginModalClose").click(function () {
         $("#loginModal").modal('hide');
     });
-    
-    
+
+
     function RenderNavbar() {
       $.ajax({
         url: "../../Navbar/Menu",
@@ -107,4 +85,19 @@
       });
     }
     RenderNavbar()
+
+
+ $(window).resize(function() {
+  if ($(window).width() > 1000) {
+     $("#header-menu").show();
+  }
+});
+
+$(document).ready(function() {
+    if ($(window).width() > 1000) {
+     $("#header-menu").show();
+  } else{
+     $("#header-menu").hide();
+  }
+});
 </script>

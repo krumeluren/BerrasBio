@@ -27,6 +27,7 @@
     display: inline-flex;
 }
 .movies-wrap {
+    padding-top: 50px;
     flex-wrap: wrap;
     width: 60vw;
     display: block;

@@ -20,6 +20,11 @@ namespace BerrasBio.Controllers
             _userManager = userManager;
             _context = context;
         }
+
+        /// <summary>
+        /// Returns role based navbar of current user
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Menu()
         {
             //If user is in role admin

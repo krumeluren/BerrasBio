@@ -4,19 +4,19 @@
 *@
 @{
 }
-<h1>Alla Filmer</h1>
+
 
 <link rel="stylesheet" href="~/images/movie_poster/" asp-append-version="true" />
 <div class="movies-wrap">
     <div class="movies-container">
-        @foreach (Movie movie in Model)
-        {
-            <div class="movie">
-                <a href="@Url.Action("Details", "Movies", new { id = movie.MovieID })">
-                    <img id="poster" src="@movie.Image_Source" />
-                    <p>@movie.Title</p>
+        @foreach (Movie movie in Model){
+            <div class="movie" style="text-align: center;">
+
+                <a style="text-decoration: none;" href="@Url.Action("Details", "Movies", new { id = movie.MovieID })">
+                    <img id="poster" src="@movie.Image_Source" />                    
+                    <div style="color: white;" class="p-2 px-3 text-uppercase"><h5>@movie.Title</h5></div>
                 </a>
-                <p>
+                <p style="color: white;" class="p-2 px-3 text-uppercase">
                     @TimeSpan.FromSeconds(movie.Length).TotalMinutes minuter
                 </p>
             </div>

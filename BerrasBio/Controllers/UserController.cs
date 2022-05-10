@@ -100,6 +100,10 @@ namespace BerrasBio.Controllers
 
             return PartialView("_LoginPartial", "Shared");
         }
+        /// <summary>
+        /// User personal page
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Privacy()
         {
             if (!_signInManager.IsSignedIn(User)) return RedirectToAction(nameof(StartController.Index), "Start");
