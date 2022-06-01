@@ -50,7 +50,7 @@
             </td>
             <td>
                 <h6>
-                    @show.Bookable_Seats.Count(a => a.Booking == null)
+                    @show.Bookable_Seats.Count(a => a.BookingID == null)
                     kvar av
                     @Html.DisplayFor(modelItem => show.Bookable_Seats.Count)
                 </h6>
